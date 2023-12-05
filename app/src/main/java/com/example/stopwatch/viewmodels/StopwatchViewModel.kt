@@ -31,7 +31,7 @@ class StopwatchViewModel : ViewModel() {
         timer?.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 elapsedTimeMillis += MILLISECONDS_INCREMENT_TIME // Increment by 10 milliseconds
-                _elapsedTime.value = elapsedTimeMillis
+                _elapsedTime.postValue(elapsedTimeMillis)
             }
         }, 0, MILLISECONDS_INCREMENT_TIME)
     }
@@ -44,8 +44,9 @@ class StopwatchViewModel : ViewModel() {
     fun resetTimer() {
         timer?.cancel()
         timer = null
+        _isTimerRunning.value = false
         elapsedTimeMillis = 0
-        _elapsedTime.value = 0
+        _elapsedTime.postValue(elapsedTimeMillis)
     }
 
     companion object {
